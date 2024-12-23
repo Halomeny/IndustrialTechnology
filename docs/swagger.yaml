@@ -1,0 +1,136 @@
+basePath: /
+definitions:
+  productsActions.CredentialsForAddProduct:
+    properties:
+      Название:
+        type: string
+      Описание:
+        type: string
+      цена:
+        type: number
+    type: object
+  productsActions.CredentialsForDelProduct:
+    properties:
+      Название:
+        type: string
+      Пометка удаления:
+        type: boolean
+    type: object
+  userActions.Credentials:
+    properties:
+      Логин:
+        type: string
+      Пароль:
+        type: string
+    type: object
+  userActions.TokenResponse:
+    properties:
+      token:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a project for industrial technogies
+  title: IndustrialBack
+  version: "1.0"
+paths:
+  /addproduct:
+    post:
+      consumes:
+      - application/json
+      description: Adding a product with a name and price
+      parameters:
+      - description: Product
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/productsActions.CredentialsForAddProduct'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Новый товар успешно добавлен
+      security:
+      - BearerAuth: []
+      summary: Add new product
+      tags:
+      - ProductsActions
+  /delorrestoreproduct:
+    post:
+      consumes:
+      - application/json
+      description: Allows you to remove or mark the deletion
+      parameters:
+      - description: Product
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/productsActions.CredentialsForDelProduct'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Пометка удаления успешно изменена
+      security:
+      - BearerAuth: []
+      summary: Delete or restore product
+      tags:
+      - ProductsActions
+  /getallproducts:
+    get:
+      description: Returns a list of all products
+      responses: {}
+      summary: Get products
+      tags:
+      - ProductsActions
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login User with name and password
+      parameters:
+      - description: User
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/userActions.Credentials'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'Успешный вход пользователя '
+          schema:
+            $ref: '#/definitions/userActions.TokenResponse'
+      summary: Login User
+      tags:
+      - Autentification
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Register User with name and password
+      parameters:
+      - description: User
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/userActions.Credentials'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешная регистрация нового пользователя
+      summary: Register User
+      tags:
+      - Registration
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
